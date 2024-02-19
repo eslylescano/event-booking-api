@@ -83,3 +83,16 @@ func (event Event) Update() error {
 	smt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.ID)
 	return err
 }
+
+func (event Event) Delete() error {
+	query := "DELETE FROM events WHERE id = ?"
+	smt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+	defer smt.Close()
+
+	_, err = smt.Exec(event.ID)
+	return err
+}
